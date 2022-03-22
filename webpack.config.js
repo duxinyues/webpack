@@ -8,6 +8,11 @@ module.exports = {
     filename: 'bundle.js',
     path: path.join(__dirname, 'dist')
   },
+  mode: "development",
+  devServer: {
+    static: path.join(__dirname, 'dist'),
+    port: 9000
+  },
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
