@@ -3,10 +3,14 @@ const path = require("path");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin'); //抽离CSS为独立文件的插件
 
 module.exports = {
+    watch:true,
     mode: 'development',
     entry: "./main.js",
+    // entry: {a:"./main.js",b:"./index.js"},
+    // entry:["./index.js","./main.js"],
+    // context:path.resolve(__dirname,"app"),
     output: {
-        filename: "bundle.js",
+        filename: "[name].js",
         path: path.resolve(__dirname, "./dist")
     },
     module: {
@@ -15,7 +19,13 @@ module.exports = {
                 test: /\.(css)$/,
                 use: [MiniCssExtractPlugin.loader, 'css-loader'],
                 // use: ['style-loader', 'css-loader']
-            }
+                exclude: path.resolve(__dirname, "node_modules"), // 排除node_modules下的文件
+            },
+            // {
+            //     // 对非文本文件采用file-loader加载
+            //     test:/\.(gif|png|pdf)$/,
+            //     use:["file-loader"]
+            // }
         ]
     },
     plugins: [
@@ -42,6 +52,13 @@ module.exports = {
             }
         },
         hot: true,
-    }
-
+    },
+   watchOptions:{
+    ignored:/node_modules/,
+    aggregateTimeout:3000, // 监听文件变化后3s再更新
+   },
+   resolveLoader:{
+    modules:['node_modules'],
+    extensions:[".js",'.json']
+   }
 }
